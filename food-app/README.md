@@ -8,5 +8,5 @@ to be implemented :
 -a day to day recording of consumed calories-fats-nutrients,etc;
 -a planer for the week-month
 -more data for processed foods 
-
+-make a REST API with node and mysql
 
