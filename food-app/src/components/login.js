@@ -3,7 +3,27 @@ import { Link } from "react-router-dom";
 
 
 export const Login =(props)=>{
+    
 
+    async function confirm (){
+
+        const result = await fetch( "http://localhost:3001/login", {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: {
+                'Accept': 'application/json',
+               'Content-Type': 'application/json'
+              // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+           
+            body: JSON.stringify({
+                "passwords": "1234",
+                "email": "tumama420@gmail.com",
+                "name": "Leonidas"
+              }),
+        })
+        
+        console.log(result)
+    }
 
     return(
         <div>
@@ -28,7 +48,7 @@ export const Login =(props)=>{
                     you dont have an account? Sign up 
                  
                  </Link>
-                 <div className=" sign" >Log in</div>
+                 <div className=" sign" onClick={confirm} >Log in</div>
               </div>
              
           </div>
