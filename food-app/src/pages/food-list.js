@@ -25,7 +25,10 @@ export const AllFood = ()=>{
     useEffect(()=>{
 
         const foods= async ()=>{
-          let result = await fetch("http://localhost:3001/all");
+          let result = await fetch("http://localhost:3001/all",{
+            method:"GET",
+            headers: {"authorization": localStorage.jwt }
+          });
           let data= await result.json();
          
           setItems([data])

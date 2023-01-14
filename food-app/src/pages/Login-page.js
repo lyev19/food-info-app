@@ -4,13 +4,13 @@ import { Login } from "../components/login";
 
 
 
-export const LoginPage =()=>{
+export const LoginPage =(props)=>{
   
 
     return(
         <div>
            <Header></Header>
-           <Login></Login>
+           <Login  logitin={props.logitin}></Login>
         </div>
     )
 } 
