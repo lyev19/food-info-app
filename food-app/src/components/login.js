@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 export const Login =(props)=>{
     
     const [username,usernameSet] = useState("");
     const [password,passwordSet]=useState("") 
-    
+    const navigate = useNavigate()
 
     const handleUser = (event)=>{
         usernameSet(event.target.value)
@@ -25,7 +25,7 @@ export const Login =(props)=>{
     
     
     async function confirm (passwords,user){
-
+        
         const result = await fetch( "http://localhost:3001/login", {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             headers: {
@@ -45,7 +45,12 @@ export const Login =(props)=>{
        
         if(res["login"]==="success"){
             localStorage.setItem( "authorization" , res["token"])
+            localStorage.setItem( "permit" , true)
             console.log(localStorage.getItem("authorization"))
+             navigate("/")
+       }
+       else{
+            localStorage.setItem( "permit" , false)
        }
         return res;
     }

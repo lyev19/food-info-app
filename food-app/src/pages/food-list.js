@@ -27,7 +27,7 @@ export const AllFood = ()=>{
         const foods= async ()=>{
           let result = await fetch("http://localhost:3001/all",{
             method:"GET",
-            headers: {"authorization": localStorage.jwt }
+            headers: {"authorization": localStorage.authorization }
           });
           let data= await result.json();
          

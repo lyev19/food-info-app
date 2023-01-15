@@ -1,4 +1,4 @@
-import AuthGaurd from "./AuthGaurd";
+import AuthGaurd from "./Authguard";
 import React from "react";
 
 const RootGaurd = ({ children }) => {

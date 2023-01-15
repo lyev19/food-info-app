@@ -1,16 +1,15 @@
 
 import React, { useEffect } from 'react'
-import { useHistory, useLocation } from "react-router-dom"
+import { Confirm } from './Confirm'
+import { useNavigate, useLocation } from "react-router-dom"
 const AuthGaurd = ({ children }) => {
-    const SAMPLE_PERMISSION = {//can be taken from any resource and stored using any of the best practice
-        moneytransfer: true,
-        list: false
-    }
-    const history = useHistory()
+    const SAMPLE_PERMISSION = localStorage.getItem("permit")
+    const history = useNavigate()
     const location = useLocation()
     useEffect(() => {
-        if (location.pathname === '/list' && !SAMPLE_PERMISSION.list) {
-            history.push("/")
+
+        if ((location.pathname !== '/sign-up' && location.pathname!="/login") && !localStorage.getItem("permit")) {
+            history("/login")
         }
         console.log(location)
     }, [location.pathname])
