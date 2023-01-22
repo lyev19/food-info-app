@@ -18,7 +18,7 @@ export const Login =(props)=>{
     
     const handleLogin = ()=>{
          const conf= confirm(password,username)
-         console.log(props)
+    
          props.logitin(username)
               
     }
@@ -41,12 +41,11 @@ export const Login =(props)=>{
         })
         const res = await result.json()
         
-        console.log(res)
        
         if(res["login"]==="success"){
             localStorage.setItem( "authorization" , res["token"])
             localStorage.setItem( "permit" , true)
-            console.log(localStorage.getItem("authorization"))
+            localStorage.setItem("user",username)
              navigate("/")
        }
        else{

@@ -72,7 +72,7 @@ export const SignUp =()=>{
   
     return(
         <div>
-            <Header></Header>
+             <Header></Header>
             <div className="login-container">
             
             <div className="sign-container-inner">

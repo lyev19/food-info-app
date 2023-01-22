@@ -1,8 +1,74 @@
 import { Link } from "react-router-dom";
 import React from "react"
+import { useEffect,useState } from "react";
 
 const Header = (props)=>{
    
+     var user = localStorage.getItem("user");
+     var log = localStorage.getItem("permit")
+     let user_tab= log ? 
+        
+            <div className="user">
+
+             <div className="user-foto-container">
+               <div className="user-foto"></div>
+             </div>
+  
+              <div className="user-name">
+                {user}
+               </div>
+              <Link to="/login" className="lil-items">
+               
+              </Link>
+           
+           </div>
+     :  <div className="user">
+                 <div className="user-foto-container">
+                     <div className="user-foto"></div>
+                  </div>
+        
+                 <div className="user-name">{user}</div>
+                 <Link to="/login" className="lil-items">
+                  <div className="pop-up-button from-header">login</div>
+                  </Link>
+                 
+               </div>
+               
+
+
+     //log ? 
+    //     if(log){
+    //         return(
+    //         <div className="user">
+    //         <div className="user-foto-container">
+    //            <div className="user-foto"></div>
+    //         </div>
+   
+    //         <div className="user-name">{user}</div>
+    //         <Link to="/login" className="lil-items">
+                
+    //         </Link>
+            
+    //        </div>)
+    //     }
+    //     else{
+    //         return(
+    //             <div className="user">
+    //             <div className="user-foto-container">
+    //                <div className="user-foto"></div>
+    //             </div>
+       
+    //             <div className="user-name">{user}</div>
+    //             <Link to="/login" className="lil-items">
+    //             <div className="pop-up-button from-header">login</div>
+    //             </Link>
+                
+    //            </div>
+    //         )
+    //     }
+
+    //  }
+
    return(
     <div className="Header-nav">
 
@@ -18,7 +84,7 @@ const Header = (props)=>{
             </div>
             
             <div className="items">
-            <Link className="lil-items" >
+            <Link className="lil-items" to="/Menu">
             <i class="fa-regular fa-calendar-days" style={{background:"none", marginLeft:"3.4vw"}}></i>
             </Link>
              </div>
@@ -30,18 +96,13 @@ const Header = (props)=>{
           
             </div>
          
+            
+            {user_tab}
+           
+            
         </div>
-        <div className="user">
-             <div className="user-foto-container">
-                <div className="user-foto"></div>
-             </div>
-    
-             <div className="user-name"></div>
-             <Link to="/login" className="lil-items">
-             <div className="pop-up-button from-header">login</div>
-             </Link>
-             
-        </div>
+       
+        
        
     </div>
    )

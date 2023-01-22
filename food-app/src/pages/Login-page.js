@@ -9,7 +9,7 @@ export const LoginPage =(props)=>{
 
     return(
         <div>
-           <Header></Header>
+             <Header></Header>
            <Login  logitin={props.logitin}></Login>
         </div>
     )

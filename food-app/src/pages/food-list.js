@@ -97,7 +97,7 @@ export const AllFood = ()=>{
     return(
         <div className="food-container">
             
-            <Header/>
+            <Header></Header>
             <div className="food-container1">
                
               
@@ -117,7 +117,7 @@ export const AllFood = ()=>{
                
             </div>
             
-            <PopMenu popHandler ={popHandler} pop={pop}/>
+            <PopMenu popHandler ={popHandler} pop={pop} items={items} id={current} />
         </div>
     )
 
