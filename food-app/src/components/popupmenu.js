@@ -1,9 +1,10 @@
 import React from "react"
 import { json, UNSAFE_enhanceManualRouteObjects } from "react-router-dom"
 import Portal from "../Portal"
-
 export const PopMenu = (props)=>{
-    const all = JSON.parse(localStorage.getItem("menu"))
+    const all = localStorage.getItem("menu")==null ?[{"Date_input":"none"}] : JSON.parse(localStorage.getItem("menu"))
+
+
     const list_of_menus = all.map(a=> <li className="menu-item">{date(a.Date_input)}</li>)
     
   
@@ -47,4 +48,23 @@ function date (de){
    }
   
   return (res.toString()).replaceAll(",","")
+}
+
+
+export const Popupalert = (props)=>{
+    
+     return( 
+      <div>
+      <Portal>
+        { (props.pop)&&(
+         <div className="pop-up-alert" onClick={props.popHandler}>
+            are u sure u want to delete ? 
+            <button className="pop-up-button"onClick={props.popHandler}>out</button>
+            <button className="send-button"onClick={props.popHandler}>send</button>
+         </div>  
+         )} 
+      </Portal>
+      </div>
+     )
+
 }

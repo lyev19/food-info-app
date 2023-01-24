@@ -3,19 +3,30 @@ import { useState,useEffect } from "react";
 import { json } from "react-router-dom";
 
 export const MenuDisplay = (props)=>{
-    const items = JSON.parse(localStorage.getItem("items"))
+   console.log(localStorage.getItem("items"))
+    let items =localStorage.getItem("items")==null?[{"Date_input":"none"}]: JSON.parse(localStorage.getItem("items"));
+    useEffect(() => {
+      
+        items =localStorage.getItem("items")==0?[{"Date_input":"none"}]: JSON.parse(localStorage.getItem("items"));
+
+
+    }, [localStorage]);
+
+
+
+   // const items = JSON.parse(localStorage.getItem("items"))
     const selected = new Date(2023,0,props.Selected)
-    console.log(JSON.stringify(selected))
-    console.log(handle_date(items[0].Date_input))
-    console.log(JSON.stringify(selected) == JSON.stringify(handle_date(items[0].Date_input)))
+    // console.log(JSON.stringify(selected))
+    // console.log(handle_date(items[0].Date_input))
+    // console.log(JSON.stringify(selected) == JSON.stringify(handle_date(items[0].Date_input)))
 
     const list = items.filter( a =>
         JSON.stringify(handle_date(a.Date_input))==JSON.stringify(selected)
     )
-    console.log(list)
+    // console.log(list)
 
     const list_res = list.map( a=>
-       <div className="text-white w-100">{a.Alimento}   {a["Energía kcal"]} kcal </div>
+       <div className="text-white w-100" >{a.Alimento}   {a["Energía kcal"]} kcal </div>
     )
     console.log(list_res)
 
@@ -26,6 +37,7 @@ export const MenuDisplay = (props)=>{
                
            </div>
            {list_res}
+           
         </div>
 
     )

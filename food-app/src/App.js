@@ -8,6 +8,10 @@ import { LoginPage } from './pages/Login-page';
 import { Menu } from './pages/Menu';
 import { SignUp } from './pages/Sign-up';
 import { useState,useEffect } from 'react';
+import { useRef } from 'react';
+
+import { remove_menu } from './components/Fetch';
+import { menus } from './components/Fetch';
 
 import RootGaurd from './components/Rootguard';
 
@@ -15,57 +19,28 @@ function App() {
 
   const [user,setUser]= useState("none")
 
-  async function menus (){
-     console.log(user)
-
-
-
-      const item = await fetch("http://localhost:3001/menu-all", {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        headers: {
-            'Accept': 'application/json',
-           'Content-Type': 'application/json'
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-       
-        body: JSON.stringify({
-            "user": user
-          }),
-    })
-    const res = await item.json()
-    localStorage.setItem("items",JSON.stringify(res))
-     
-      const menu = await fetch("http://localhost:3001/menu", {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        headers: {
-            'Accept': 'application/json',
-           'Content-Type': 'application/json'
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-       
-        body: JSON.stringify({
-            "user": user
-          }),
-    })
-       const res1= await menu.json()
-
-       localStorage.setItem("menu",JSON.stringify(res1))
-
-  }
-  
- const handleUser=(a)=>{
-     setUser(a) 
-      menus();
-    
-  }
 
   useEffect( ()=>{
-     console.log(user)
-     setTimeout(() => {
-        console.log("session end")
-     }, 60*100);
+   
+    console.log("useeffect????????????")
+    menus(user)
+     
+    //  console.log(user)
+    //  setTimeout(() => {
+    //     console.log("session end")
+    //  }, 600*100);
   },[user])
   
+
+
+ const handleUser= (a)=>{
+ 
+     setUser(a)
+    
+ 
+  }
+
+
 
    
   return (
@@ -86,7 +61,7 @@ function App() {
 
         </Routes> 
    
-        </RootGaurd>
+      </RootGaurd>
       
       </Router>
     </div>

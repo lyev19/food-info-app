@@ -5,6 +5,8 @@ import { Chart } from "../components/food-chart"
 import React from "react"
 import { Search } from "../components/Search"
 import { PopMenu } from "../components/popupmenu"
+import { foods } from "../components/Fetch"
+
 export const AllFood = ()=>{
      
      const [items,setItems] = useState([{Alimento:"verdudas"}]);
@@ -23,19 +25,14 @@ export const AllFood = ()=>{
 
 
     useEffect(()=>{
+      
+        const run = async ()=>{
+          const data = await foods()
+           setItems([data])
+        } 
 
-        const foods= async ()=>{
-          let result = await fetch("http://localhost:3001/all",{
-            method:"GET",
-            headers: {"authorization": localStorage.authorization }
-          });
-          let data= await result.json();
-         
-          setItems([data])
-        }
-        foods()
-       
-       
+        run()
+               
     },[] 
     )
      function currentHandler (a){
@@ -54,6 +51,9 @@ export const AllFood = ()=>{
                .normalize();
     }
 
+
+
+
     const searchHandler = (s)=>{
     
       setSearch(s.current.value)
@@ -69,13 +69,11 @@ export const AllFood = ()=>{
         )
         ])
       
-         console.log(eliminarDiacriticos(items[0][20].Alimento) )
       }
        
        console.log(items[0].find(a=> regex.test(a.Alimento)))
-       console.log(search)
-       console.log(result)
       
+    
     }
     
     

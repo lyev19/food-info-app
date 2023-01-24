@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { menus } from "./Fetch";
 export const Login =(props)=>{
     
     const [username,usernameSet] = useState("");
@@ -17,9 +18,10 @@ export const Login =(props)=>{
     }
     
     const handleLogin = ()=>{
-         const conf= confirm(password,username)
-    
+         const conf= confirm(password,username) 
          props.logitin(username)
+         console.log(username)
+         
               
     }
     
@@ -46,6 +48,7 @@ export const Login =(props)=>{
             localStorage.setItem( "authorization" , res["token"])
             localStorage.setItem( "permit" , true)
             localStorage.setItem("user",username)
+            menus(username)
              navigate("/")
        }
        else{
