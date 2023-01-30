@@ -5,11 +5,20 @@ import {useState,useEffect } from "react";
 import { get_menu_id } from "../pages/Menu";
 import { Info } from "../components/popupmenu";
 export const MenuDisplay = (props)=>{
+  
    const [Total,SetTotal] = useState(0)
    const [Menus,setMenus] = useState([])
-   const [selected,Setselected] = useState( new Date(2022,0,props.Selected))
+   const [selected,Setselected] = useState( new Date(props.Selected_year,props.Selected_month,props.Selected))
    const [pop,setPop] = useState(false)
-   let items =localStorage.getItem("items")===null?[{"Date_input":"none"}]: JSON.parse(localStorage.getItem("items"));
+   let items =localStorage.getItem("items")==="[]"?[{"Date_input":"none"}]: JSON.parse(localStorage.getItem("items"));
+  console.log(localStorage.getItem("items"))
+ console.log(items)
+  
+ 
+  useEffect(() => {
+   items =localStorage.getItem("items")==="[]"?[{"Date_input":"none"}]: JSON.parse(localStorage.getItem("items"));
+   console.log(localStorage.getItem("items"))
+  }, [localStorage]);
 
 
    const popHandler=()=>{
@@ -37,10 +46,12 @@ export const MenuDisplay = (props)=>{
       setMenus([])
       
       console.log(props.Selected)
-      Setselected(new Date(2022,0,props.Selected))
-      menu_loader(new Date(2022,0,props.Selected))
-      
-      
+      console.log(props.Selected_year)
+      console.log(props.Selected_month)
+      Setselected(new Date(props.Selected_year,props.Selected_month,props.Selected))
+      menu_loader(new Date(props.Selected_year,props.Selected_month,props.Selected))
+      console.log(Menus)
+      //
     }, [props.Selected]);
 
   
@@ -51,7 +62,7 @@ export const MenuDisplay = (props)=>{
        
        for(let i=0;i<Menus.length;i++){
         if(Menus[i].weight!==100){
-        result = result +(Menus[i].weight * 100 )/Menus[i]["Energía kcal"]
+        result = result +(Menus[i].weight *Menus[i]["Energía kcal"])/100
         }
         else {
             result = result + Menus[i]["Energía kcal"]
@@ -65,11 +76,17 @@ export const MenuDisplay = (props)=>{
    }
     
    function menu_loader(sel ){
-
+   
+    console.log(sel)
+    //console.log(handle_date(items[0]["Date_input"]))
+    console.log(items==null)
+    if(items==null){
+       return 0
+    }
     const res = items.filter( a =>
     JSON.stringify(handle_date(a.Date_input))==JSON.stringify(sel))
    
-
+     console.log(res)
      for(let i=0;i<res.length;i++){
         handle_menu(res[i])
      }
@@ -104,13 +121,15 @@ export const MenuDisplay = (props)=>{
         remove_items(mi,ii)
         console.log(Menus)
         
-        list_res = Menus.map( a=> 
-            <div className="text-white w-100" id={a.id}>{a.Alimento} {(a["Energía kcal"] * a.weight)/100} kcal  {a.weight} gr  <button class="text-white w-25 " id={a.id} onClick={(event)=>click(get_menu_id(selected),event.target.id)}><i className="fas fa-times w-100" id={a.id}></i></button></div>
-         )
+        list_res = JSON.stringify(Menus)==="[]"?[0].map((a)=>{ return (<button className="text-white-50 w-100 ">add menu!</button>) }):Menus.map( a=> 
+          <div className="text-white w-100" id={a.id}>{a.Alimento} {(a["Energía kcal"] * a.weight)/100} kcal  {a.weight} gr  <button class="text-white w-25 " id={a.id} onClick={(event)=>click(get_menu_id(selected),event.target.id)}><i className="fas fa-times w-100" id={a.id}></i></button></div>
+       )
         
         
     }
-    let list_res = Menus.map( a=> 
+
+    console.log(JSON.stringify(Menus)==="[]")
+    let list_res =JSON.stringify(Menus)==="[]"?[0].map((a)=>{ return (<button className="text-white-50 w-100 ">add menu!</button>) }) :Menus.map( a=> 
        <div className="text-white w-100" id={a.id}>{a.Alimento} {(a["Energía kcal"] * a.weight)/100} kcal  {a.weight} gr  <button class="text-white w-25 " id={a.id} onClick={(event)=>click(get_menu_id(selected),event.target.id)}><i className="fas fa-times w-100" id={a.id}></i></button></div>
     )
 
@@ -123,8 +142,10 @@ export const MenuDisplay = (props)=>{
            </div>
            {list_res}
            
-           <h2 className="text-white w-100"> Total kcal: {Total}  <button className="text-white-50 w-100 " onClick={a=>{popHandler()}}> more info</button>
-             </h2>
+           {(JSON.stringify(Menus)!=="[]")&&( <h2 className="text-white w-100"> Total kcal: {Total}  <button className="text-white-50 w-100 " onClick={a=>{popHandler()}}> more info</button>
+             </h2> 
+            )} 
+
            <Info pop={pop} popHandler={popHandler}/>
 
 

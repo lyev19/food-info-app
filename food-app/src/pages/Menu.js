@@ -12,13 +12,15 @@ import { delete_item } from "../components/Fetch";
 export const Menu = (props)=>{
     const month = new Date();
    const [Selected,setSelected]= useState( month.getUTCDate())
+   const [Selected_month,SetSelected_month] = useState(month.getUTCMonth())
+   const [Selected_year,SetSelected_year] = useState(month.getUTCFullYear())
+   const [hasMenus,sethasMenus] = useState (false)
    const [Menu_io,setMenu_id] = useState(0)
    const [Date_menu,setDate_menu]= useState(new Date(month.getUTCFullYear(),month.getUTCMonth(),month.getUTCDate()))
    const [pop,setPop] = useState(false)
    
-   const menu = localStorage.getItem("menu") !==null? JSON.parse(localStorage.getItem("menu")):[{}]
+   //const menu = localStorage.getItem("menu") !==null? JSON.parse(localStorage.getItem("menu")):[{}]
   
-   
 
     const popHandler=()=>{
       setPop(!pop);
@@ -31,7 +33,13 @@ export const Menu = (props)=>{
         const res = await delete_item(menu_id,item_id)
         menus(localStorage.getItem("user"))
     }
-
+    const set_month = (date)=>{
+        SetSelected_month(date)
+    }
+    
+    const set_year =(date)=>{
+        SetSelected_year(date)
+    }
     //this should work when renewing menus after deletion
     const remove_menu_ = async () =>{
         const res= get_menu_id(Date_menu)
@@ -54,7 +62,7 @@ export const Menu = (props)=>{
        
        setSelected(day)
     //    setDate_menu(`${month.getUTCFullYear()}-${month.getUTCMonth()+1}-${day}`)
-    setDate_menu( new Date(month.getUTCFullYear(),month.getUTCMonth(),day))
+      setDate_menu( new Date(Selected_year,Selected_month,day))
       
     }
 
@@ -66,16 +74,18 @@ export const Menu = (props)=>{
                 
                 <div className="col p-4 w-25">
                   <h2 className="text-white-50 w-25">Calendario</h2>
-                  <Calendar handleSelect = {handleSelect}/>
+                  <Calendar  Selected={Selected} handleSelect = {handleSelect} Selected_month={Selected_month} Selected_year={Selected_year}  set_month={set_month} set_year={set_year} />
                 </div>
                 <div className=" col p-4 w-25">
                     <h2 className="text-white-50 w-25">Selected Menu</h2>
-                    <MenuDisplay Selected={Selected} Date_menu={Date_menu} remove_item={remove_item} />
-                    <button className="w-75 text-black btn-info" onClick={()=>popHandler()} >Delete Menu</button>
+                    <MenuDisplay Selected={Selected}  Date_menu={Date_menu} remove_item={remove_item}  Selected_month={Selected_month} Selected_year={Selected_year}  />
+                    <button className="w-75 text-white btn-info" onClick={()=>popHandler()} >Delete Menu</button> 
                 </div>
+              
              </div>
-             
              <Popupalert popHandler={popHandler} pop={pop} remove_menu={remove_menu_} Date_menu={Date_menu} add_item={add_item}/>
+
+           
         </div>
     )
 }

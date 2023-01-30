@@ -17,8 +17,8 @@ const Header = (props)=>{
               <div className="user-name">
                 {user}
                </div>
-              <Link to="/login" className="lil-items">
-               
+              <Link to="/login" className="lil-items"onClick={(a)=>{localStorage.clear()}}>
+                   logoff
               </Link>
            
            </div>

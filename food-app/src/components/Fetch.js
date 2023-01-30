@@ -80,18 +80,21 @@ export async function menus (user){
 
 
 export async function add_item(menu_id,item_id,weight){
-  
-  if(weight===null||weight===0){
-    weight=100
-  }
+
+  console.log(menu_id)
+  console.log(item_id)
+  console.log(weight)
   const add_item = await fetch("http://localhost:3001/item-add",{
     method:"POST",
-    headers: {"authorization": localStorage.authorization },
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      "authorization": localStorage.authorization },
     body: JSON.stringify({
         "menu": menu_id,
         "item": item_id,
-        "weight":weight
-    })
+        "weight": weight
+    }),
 
   })
   const res = await add_item.json()

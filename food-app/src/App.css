@@ -951,3 +951,14 @@
    height: 85%;
    background: #202220;
 }
+
+.month-button{
+  width: 25%;
+}
+.button-container{
+  width:100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgb(35, 147, 212);
+}

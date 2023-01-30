@@ -1,13 +1,51 @@
 import React from "react"
+import { useRef } from "react"
 import { json, UNSAFE_enhanceManualRouteObjects } from "react-router-dom"
 import Portal from "../Portal"
-
+import { add_item } from "./Fetch"
+import { useState,useEffect } from "react"
+import { menus } from "./Fetch"
 export const PopMenu = (props)=>{
 
+    //menus
     const all = localStorage.getItem("menu")==null ?[{"Date_input":"none"}] : JSON.parse(localStorage.getItem("menu"))
-    const list_of_menus = all.map(a=> <li className="menu-item">{date(a.Date_input)}</li>)
-    
+    const list_of_menus = all.map(a=> <li className="menu-item" id={a.Id} onClick={(value)=>set_menu(value.target.id)}>{date(a.Date_input)} id {a.Id}</li>)
+    const items = props.items
+    const [Menu,SetMenu]=useState(all[0].Id)
+    //weight type is string, convert before
+    const [Weight,setWeight]= useState(100)
+    const inputRef = useRef(100)
+
+    const sel_item = JSON.stringify(props.items[0])===JSON.stringify({Alimento: 'verdudas'})?0: props.items[0][parseInt(props.id)].id
   
+    useEffect(() => {
+       console.log(Menu)
+       console.log(sel_item)
+       console.log(Weight)
+    }, [Menu]);
+    useEffect(() => {
+      console.log(Weight)
+      console.log(typeof Weight)
+   }, [Weight]);
+    const set_menu = (id)=>{
+       SetMenu(id)
+      
+    }
+    const set_weight = ()=>{
+       
+        setWeight(inputRef.current.value)
+      
+      
+    }
+    async function click_add (){
+      console.log(Menu)
+      console.log(sel_item)
+      console.log(Weight)
+       const res = await add_item(Menu,sel_item,Weight) 
+       
+       const result = await menus(localStorage.getItem("user"));
+       console.log(result.json())
+    }
 
     return(
         <div>
@@ -19,10 +57,10 @@ export const PopMenu = (props)=>{
              <div className="pop-up-container">
                <div className="pop-up-food-name">{props.items[0][parseInt(props.id)].Alimento}</div>
                 
-                <input className="pop-up-input" placeholder="weigth 100g"></input>
+                <input className="pop-up-input" type="number" placeholder="weigth 100g" value={Weight} ref={inputRef} onChange={set_weight} ></input>
                 
                 <button className="pop-up-button"onClick={props.popHandler}>out</button>
-                <button className="send-button"onClick={props.popHandler}>send</button>
+                <button className="send-button"onClick={(a)=>click_add()}>send</button>
                 <div className="pop-up-box">
                   <h2 className="container">select menu</h2>
                   <ul className="menu-list">
