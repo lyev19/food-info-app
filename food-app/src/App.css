@@ -586,13 +586,20 @@
   border: 1px solid #c6ffdd;
 }
 .menu-list{
+  height: 55%;
   width: 17vw;
+  overflow-y: scroll;
+  
 }
 .menu-item{
   width: 100%;
 }
-
-
+.selected1{
+  background: rgb(78, 78, 78);
+}
+.menu-item:active{
+  background: greenyellow;
+}
 /*POP-UP MORE INFO*/
 .more-info-1{
   position: absolute;

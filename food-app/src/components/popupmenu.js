@@ -8,28 +8,36 @@ import { menus } from "./Fetch"
 export const PopMenu = (props)=>{
 
     //menus
-    const all = localStorage.getItem("menu")==null ?[{"Date_input":"none"}] : JSON.parse(localStorage.getItem("menu"))
-    const list_of_menus = all.map(a=> <li className="menu-item" id={a.Id} onClick={(value)=>set_menu(value.target.id)}>{date(a.Date_input)} id {a.Id}</li>)
-    const items = props.items
+    console.log(localStorage.getItem("menu"))
+    const all = localStorage.getItem("menu")== "[]" ?[{"Date_input":"none","Id":"0"}] : JSON.parse(localStorage.getItem("menu"))
     const [Menu,SetMenu]=useState(all[0].Id)
+    let list_of_menus = all.map((a)=>{
+      
+      if(a.Id === Menu|| JSON.stringify(a.Id)===Menu){
+         return(<li className="menu-item selected1" id={a.Id} key={a.Id} onClick={(value)=>set_menu(value.target.id)}>{date(a.Date_input)} id {a.Id}</li>)
+      }
+      else{
+         return(<li className="menu-item" id={a.Id} key={a.Id} onClick={(value)=>set_menu(value.target.id)}>{date(a.Date_input)} id {a.Id}</li>)
+      }
+       
+   
+   })
+    const items = props.items
+    
+    
     //weight type is string, convert before
     const [Weight,setWeight]= useState(100)
     const inputRef = useRef(100)
 
     const sel_item = JSON.stringify(props.items[0])===JSON.stringify({Alimento: 'verdudas'})?0: props.items[0][parseInt(props.id)].id
-  
-    useEffect(() => {
-       console.log(Menu)
-       console.log(sel_item)
-       console.log(Weight)
-    }, [Menu]);
-    useEffect(() => {
-      console.log(Weight)
-      console.log(typeof Weight)
-   }, [Weight]);
+   
+   
     const set_menu = (id)=>{
+      console.log(typeof id)
        SetMenu(id)
       
+   
+          
     }
     const set_weight = ()=>{
        
@@ -44,7 +52,8 @@ export const PopMenu = (props)=>{
        const res = await add_item(Menu,sel_item,Weight) 
        
        const result = await menus(localStorage.getItem("user"));
-       console.log(result.json())
+
+       props.popHandler()
     }
 
     return(

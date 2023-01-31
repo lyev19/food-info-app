@@ -4,6 +4,8 @@ import {useState,useEffect } from "react";
 
 import { get_menu_id } from "../pages/Menu";
 import { Info } from "../components/popupmenu";
+import { add_menu } from "./Fetch";
+import { menus } from "./Fetch";
 export const MenuDisplay = (props)=>{
   
    const [Total,SetTotal] = useState(0)
@@ -11,15 +13,25 @@ export const MenuDisplay = (props)=>{
    const [selected,Setselected] = useState( new Date(props.Selected_year,props.Selected_month,props.Selected))
    const [pop,setPop] = useState(false)
    let items =localStorage.getItem("items")==="[]"?[{"Date_input":"none"}]: JSON.parse(localStorage.getItem("items"));
-  console.log(localStorage.getItem("items"))
+   const user = localStorage.getItem("user")
+  const [added_menu,adding_menu]=useState(false)
+   console.log(localStorage.getItem("items"))
  console.log(items)
   
  
+
+
+
   useEffect(() => {
    items =localStorage.getItem("items")==="[]"?[{"Date_input":"none"}]: JSON.parse(localStorage.getItem("items"));
    console.log(localStorage.getItem("items"))
+   
   }, [localStorage]);
-
+  useEffect(() => {
+   list_res =JSON.stringify(Menus)==="[]"?[0].map((a)=>{ return ( check_menu() ? <button className="text-white-50 w-100 " onClick={()=> new_menu() } >add menu!</button>:<div style={{"width":"100%","color":"white"}}>a menu for this date exists,add foods!</div>) }):Menus.map( a=> 
+      <div className="text-white w-100" id={a.id}>{a.Alimento} {(a["Energía kcal"] * a.weight)/100} kcal  {a.weight} gr  <button class="text-white w-25 " id={a.id} onClick={(event)=>click(get_menu_id(selected),event.target.id)}><i className="fas fa-times w-100" id={a.id}></i></button></div>
+   ) 
+  }, [added_menu]);
 
    const popHandler=()=>{
     setPop(!pop);
@@ -54,7 +66,9 @@ export const MenuDisplay = (props)=>{
       //
     }, [props.Selected]);
 
-  
+   
+    
+
 
   
    function set_total ( Menus){
@@ -105,23 +119,44 @@ export const MenuDisplay = (props)=>{
      
    }
 
- 
 
-   console.log(Menus)
-   // const items = JSON.parse(localStorage.getItem("items"))
-   
-    // console.log(JSON.stringify(selected))
-    // console.log(handle_date(items[0].Date_input))
-    // console.log(JSON.stringify(selected) == JSON.stringify(handle_date(items[0].Date_input)))
+   const new_menu = async ()=>{
+      console.log(selected)
+      console.log(JSON.stringify(selected).slice(1,11))
+      const date = new Date()
+      const res =await add_menu(user,JSON.stringify(selected).slice(1,11))
+      const reload = await menus(user)
+     adding_menu(!added_menu)
+      console.log(res.json())
 
+   } 
   
-    // console.log(list)
+   function check_menu (){
+        const all_menus = JSON.parse(localStorage.getItem("menu"))
+        console.log(all_menus)
+        if(JSON.stringify(all_menus)==="[]"){
+         return true
+        }
+        console.log(typeof all_menus[0].Date_input)
+        console.log(new Date(all_menus[0].Date_input))
+        console.log(typeof JSON.stringify(selected) )
+        
+        const res = all_menus.filter(a => JSON.stringify(new Date(a.Date_input)) === JSON.stringify(selected) )
+        console.log(res)
+        if(res.length===0)
+        { 
+         return true
+        }
+        else 
+        return false
+   }
+   console.log(check_menu())
     async function click (mi,ii){
         const res = await props.remove_item(mi,ii)
         remove_items(mi,ii)
         console.log(Menus)
-        
-        list_res = JSON.stringify(Menus)==="[]"?[0].map((a)=>{ return (<button className="text-white-50 w-100 ">add menu!</button>) }):Menus.map( a=> 
+        //here add_menu
+        list_res = JSON.stringify(Menus)==="[]"?[0].map((a)=>{ return ( check_menu() ?<button className="text-white-50 w-100 " onClick={()=> new_menu() } >add menu!</button>:<div>a menu for this date exists,add foods!</div>) }):Menus.map( a=> 
           <div className="text-white w-100" id={a.id}>{a.Alimento} {(a["Energía kcal"] * a.weight)/100} kcal  {a.weight} gr  <button class="text-white w-25 " id={a.id} onClick={(event)=>click(get_menu_id(selected),event.target.id)}><i className="fas fa-times w-100" id={a.id}></i></button></div>
        )
         
@@ -129,7 +164,9 @@ export const MenuDisplay = (props)=>{
     }
 
     console.log(JSON.stringify(Menus)==="[]")
-    let list_res =JSON.stringify(Menus)==="[]"?[0].map((a)=>{ return (<button className="text-white-50 w-100 ">add menu!</button>) }) :Menus.map( a=> 
+
+    //here add menu
+    let list_res =JSON.stringify(Menus)==="[]"?[0].map((a)=>{ return ( check_menu() ? <button className="text-white-50 w-100 " onClick={()=> new_menu() } >add menu!</button>:<div style={{"width":"100%","color":"white"}}>a menu for this date exists,add foods!</div>) }):Menus.map( a=> 
        <div className="text-white w-100" id={a.id}>{a.Alimento} {(a["Energía kcal"] * a.weight)/100} kcal  {a.weight} gr  <button class="text-white w-25 " id={a.id} onClick={(event)=>click(get_menu_id(selected),event.target.id)}><i className="fas fa-times w-100" id={a.id}></i></button></div>
     )
 

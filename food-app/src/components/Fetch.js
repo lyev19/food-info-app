@@ -18,13 +18,16 @@ export async function remove_menu (menu_id){
 
 
 //date format yyyy-mm-dd
-export async function add_menu (user_id,date){
-
+export async function add_menu (user,date){
+   console.log(user)
+   console.log(date)
   const add_menu = await fetch("http://localhost:3001/menu-add",{
     method:"POST",
-    headers: {"authorization": localStorage.authorization },
+    headers: {  'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    "authorization": localStorage.authorization },
     body: JSON.stringify({
-        "user": user_id,
+        "user": user,
         "date": date
     })
 
